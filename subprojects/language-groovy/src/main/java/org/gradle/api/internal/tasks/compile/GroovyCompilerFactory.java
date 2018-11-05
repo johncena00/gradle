@@ -25,6 +25,7 @@ import org.gradle.api.tasks.WorkResult;
 import org.gradle.api.tasks.compile.GroovyCompileOptions;
 import org.gradle.internal.file.PathToFileResolver;
 import org.gradle.internal.jvm.inspection.JvmVersionDetector;
+import org.gradle.internal.operations.BuildOperationExecutor;
 import org.gradle.language.base.internal.compile.Compiler;
 import org.gradle.language.base.internal.compile.CompilerFactory;
 import org.gradle.process.internal.DefaultExecActionFactory;
@@ -40,16 +41,19 @@ public class GroovyCompilerFactory implements CompilerFactory<GroovyJavaJointCom
     private final WorkerDaemonFactory workerDaemonFactory;
     private final IsolatedClassloaderWorkerFactory inProcessWorkerFactory;
     private final PathToFileResolver fileResolver;
-    private AnnotationProcessorDetector processorDetector;
+    private final AnnotationProcessorDetector processorDetector;
     private final JvmVersionDetector jvmVersionDetector;
+    private final BuildOperationExecutor buildOperationExecutor;
 
-    public GroovyCompilerFactory(ProjectInternal project, WorkerDaemonFactory workerDaemonFactory, IsolatedClassloaderWorkerFactory inProcessWorkerFactory, PathToFileResolver fileResolver, AnnotationProcessorDetector processorDetector, JvmVersionDetector jvmVersionDetector) {
+    public GroovyCompilerFactory(ProjectInternal project, WorkerDaemonFactory workerDaemonFactory, IsolatedClassloaderWorkerFactory inProcessWorkerFactory, PathToFileResolver fileResolver,
+                                 AnnotationProcessorDetector processorDetector, JvmVersionDetector jvmVersionDetector, BuildOperationExecutor buildOperationExecutor) {
         this.project = project;
         this.workerDaemonFactory = workerDaemonFactory;
         this.inProcessWorkerFactory = inProcessWorkerFactory;
         this.fileResolver = fileResolver;
         this.processorDetector = processorDetector;
         this.jvmVersionDetector = jvmVersionDetector;
+        this.buildOperationExecutor = buildOperationExecutor;
     }
 
     @Override
@@ -61,11 +65,17 @@ public class GroovyCompilerFactory implements CompilerFactory<GroovyJavaJointCom
         } else {
             workerFactory = inProcessWorkerFactory;
         }
-        Compiler<GroovyJavaJointCompileSpec> groovyCompiler = new DaemonGroovyCompiler(project.getServices().get(WorkerDirectoryProvider.class).getWorkingDirectory(), new DaemonSideCompiler(), project.getServices().get(ClassPathRegistry.class), workerFactory, fileResolver, jvmVersionDetector);
+        Compiler<GroovyJavaJointCompileSpec> groovyCompiler = new DaemonGroovyCompiler(project.getServices().get(WorkerDirectoryProvider.class).getWorkingDirectory(), new DaemonSideCompiler(buildOperationExecutor), project.getServices().get(ClassPathRegistry.class), workerFactory, fileResolver, jvmVersionDetector);
         return new AnnotationProcessorDiscoveringCompiler<GroovyJavaJointCompileSpec>(new NormalizingGroovyCompiler(groovyCompiler), processorDetector);
     }
 
     private static class DaemonSideCompiler implements Compiler<GroovyJavaJointCompileSpec>, Serializable {
+        private final BuildOperationExecutor buildOperationExecutor;
+
+        public DaemonSideCompiler(BuildOperationExecutor buildOperationExecutor) {
+            this.buildOperationExecutor = buildOperationExecutor;
+        }
+
         @Override
         public WorkResult execute(GroovyJavaJointCompileSpec spec) {
             DefaultExecActionFactory execHandleFactory = new DefaultExecActionFactory(new IdentityFileResolver());
@@ -74,7 +84,7 @@ public class GroovyCompilerFactory implements CompilerFactory<GroovyJavaJointCom
                 if (CommandLineJavaCompileSpec.class.isAssignableFrom(spec.getClass())) {
                     javaCompiler = new CommandLineJavaCompiler(execHandleFactory);
                 } else {
-                    javaCompiler = new JdkJavaCompiler(new JavaHomeBasedJavaCompilerFactory());
+                    javaCompiler = new JdkJavaCompiler(new JavaHomeBasedJavaCompilerFactory(), buildOperationExecutor);
                 }
                 Compiler<GroovyJavaJointCompileSpec> groovyCompiler = new ApiGroovyCompiler(javaCompiler);
                 return groovyCompiler.execute(spec);

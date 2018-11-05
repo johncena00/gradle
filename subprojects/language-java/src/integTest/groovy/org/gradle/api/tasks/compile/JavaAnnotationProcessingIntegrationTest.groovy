@@ -16,7 +16,9 @@
 
 package org.gradle.api.tasks.compile
 
+import org.gradle.api.internal.tasks.compile.processing.ProcessAnnotationsBuildOperationType
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
+import org.gradle.integtests.fixtures.BuildOperationsFixture
 import org.gradle.language.fixtures.HelperProcessorFixture
 import spock.lang.Issue
 
@@ -266,5 +268,28 @@ class JavaAnnotationProcessingIntegrationTest extends AbstractIntegrationSpec {
         '''
         then:
         succeeds "compileJava"
+    }
+
+    def "wraps processing in build operation"() {
+        given:
+        def operations = new BuildOperationsFixture(executer, testDirectoryProvider)
+        buildFile << """
+            dependencies {
+                compileOnly project(":annotation")
+                annotationProcessor project(":processor")
+            }
+        """
+
+        when:
+        succeeds "compileJava"
+
+        then:
+        def operation = operations.first(ProcessAnnotationsBuildOperationType)
+        operation.displayName == 'Process annotations with HelperProcessor'
+        operation.hasDetailsOfType(ProcessAnnotationsBuildOperationType.Details)
+        operation.details.processorClassName == 'HelperProcessor'
+        operation.details.annotationNames == ['Helper']
+        ProcessAnnotationsBuildOperationType.Result.isAssignableFrom(operation.resultType)
+        operation.result.claimed == true
     }
 }

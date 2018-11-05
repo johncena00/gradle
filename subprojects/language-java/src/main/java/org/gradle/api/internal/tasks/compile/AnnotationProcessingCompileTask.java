@@ -19,6 +19,7 @@ package org.gradle.api.internal.tasks.compile;
 import org.gradle.api.internal.tasks.compile.incremental.processing.AnnotationProcessingResult;
 import org.gradle.api.internal.tasks.compile.processing.AggregatingProcessor;
 import org.gradle.api.internal.tasks.compile.processing.AnnotationProcessorDeclaration;
+import org.gradle.api.internal.tasks.compile.processing.BuildOperationReportingProcessor;
 import org.gradle.api.internal.tasks.compile.processing.DynamicProcessor;
 import org.gradle.api.internal.tasks.compile.processing.IncrementalAnnotationProcessorType;
 import org.gradle.api.internal.tasks.compile.processing.IsolatingProcessor;
@@ -26,6 +27,7 @@ import org.gradle.api.internal.tasks.compile.processing.NonIncrementalProcessor;
 import org.gradle.internal.classloader.FilteringClassLoader;
 import org.gradle.internal.classpath.DefaultClassPath;
 import org.gradle.internal.concurrent.CompositeStoppable;
+import org.gradle.internal.operations.BuildOperationExecutor;
 
 import javax.annotation.processing.Processor;
 import javax.tools.JavaCompiler;
@@ -53,15 +55,18 @@ class AnnotationProcessingCompileTask implements JavaCompiler.CompilationTask {
     private final Set<AnnotationProcessorDeclaration> processorDeclarations;
     private final List<File> annotationProcessorPath;
     private final AnnotationProcessingResult result;
+    private final BuildOperationExecutor buildOperationExecutor;
 
     private URLClassLoader processorClassloader;
     private boolean called;
 
-    AnnotationProcessingCompileTask(JavaCompiler.CompilationTask delegate, Set<AnnotationProcessorDeclaration> processorDeclarations, List<File> annotationProcessorPath, AnnotationProcessingResult result) {
+    AnnotationProcessingCompileTask(JavaCompiler.CompilationTask delegate, Set<AnnotationProcessorDeclaration> processorDeclarations, List<File> annotationProcessorPath,
+                                    AnnotationProcessingResult result, BuildOperationExecutor buildOperationExecutor) {
         this.delegate = delegate;
         this.processorDeclarations = processorDeclarations;
         this.annotationProcessorPath = annotationProcessorPath;
         this.result = result;
+        this.buildOperationExecutor = buildOperationExecutor;
     }
 
     @Override
@@ -99,6 +104,7 @@ class AnnotationProcessingCompileTask implements JavaCompiler.CompilationTask {
             Class<?> processorClass = loadProcessor(declaredProcessor);
             Processor processor = instantiateProcessor(processorClass);
             processor = decorateForIncrementalProcessing(processor, declaredProcessor.getType());
+            processor = decorateWithBuildOperation(processor);
             processors.add(processor);
         }
         delegate.setProcessors(processors);
@@ -151,6 +157,10 @@ class AnnotationProcessingCompileTask implements JavaCompiler.CompilationTask {
             default:
                 return new NonIncrementalProcessor(processor, result);
         }
+    }
+
+    private Processor decorateWithBuildOperation(Processor processor) {
+        return new BuildOperationReportingProcessor(buildOperationExecutor, processor);
     }
 
     private void cleanupProcessors() {

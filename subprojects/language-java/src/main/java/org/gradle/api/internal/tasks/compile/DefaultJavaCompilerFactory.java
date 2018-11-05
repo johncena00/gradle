@@ -18,6 +18,7 @@ package org.gradle.api.internal.tasks.compile;
 import org.gradle.api.internal.tasks.compile.processing.AnnotationProcessorDetector;
 import org.gradle.internal.Factory;
 import org.gradle.internal.file.PathToFileResolver;
+import org.gradle.internal.operations.BuildOperationExecutor;
 import org.gradle.language.base.internal.compile.CompileSpec;
 import org.gradle.language.base.internal.compile.Compiler;
 import org.gradle.process.internal.ExecHandleFactory;
@@ -33,14 +34,17 @@ public class DefaultJavaCompilerFactory implements JavaCompilerFactory {
     private final PathToFileResolver fileResolver;
     private final ExecHandleFactory execHandleFactory;
     private AnnotationProcessorDetector processorDetector;
+    private final BuildOperationExecutor buildOperationExecutor;
 
-    public DefaultJavaCompilerFactory(WorkerDirectoryProvider workingDirProvider, WorkerDaemonFactory workerDaemonFactory, Factory<JavaCompiler> javaHomeBasedJavaCompilerFactory, PathToFileResolver fileResolver, ExecHandleFactory execHandleFactory, AnnotationProcessorDetector processorDetector) {
+    public DefaultJavaCompilerFactory(WorkerDirectoryProvider workingDirProvider, WorkerDaemonFactory workerDaemonFactory, Factory<JavaCompiler> javaHomeBasedJavaCompilerFactory,
+                                      PathToFileResolver fileResolver, ExecHandleFactory execHandleFactory, AnnotationProcessorDetector processorDetector, BuildOperationExecutor buildOperationExecutor) {
         this.workingDirProvider = workingDirProvider;
         this.workerDaemonFactory = workerDaemonFactory;
         this.javaHomeBasedJavaCompilerFactory = javaHomeBasedJavaCompilerFactory;
         this.fileResolver = fileResolver;
         this.execHandleFactory = execHandleFactory;
         this.processorDetector = processorDetector;
+        this.buildOperationExecutor = buildOperationExecutor;
     }
 
     @Override
@@ -63,7 +67,7 @@ public class DefaultJavaCompilerFactory implements JavaCompilerFactory {
             return new CommandLineJavaCompiler(execHandleFactory);
         }
 
-        Compiler<JavaCompileSpec> compiler = new JdkJavaCompiler(javaHomeBasedJavaCompilerFactory);
+        Compiler<JavaCompileSpec> compiler = new JdkJavaCompiler(javaHomeBasedJavaCompilerFactory, buildOperationExecutor);
         if (ForkingJavaCompileSpec.class.isAssignableFrom(type) && !jointCompilation) {
             return new DaemonJavaCompiler(workingDirProvider.getWorkingDirectory(), compiler, workerDaemonFactory, fileResolver);
         }
