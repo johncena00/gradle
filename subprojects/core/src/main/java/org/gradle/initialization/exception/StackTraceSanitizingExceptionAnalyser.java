@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-package org.gradle.api.internal.buildevents
+package org.gradle.initialization.exception;
 
-import org.gradle.api.logging.configuration.ConsoleOutput
+import org.codehaus.groovy.runtime.StackTraceUtils;
 
-class RichConsoleBuildResultLoggerFunctionalTest extends AbstractBuildResultLoggerFunctionalTest {
-    ConsoleOutput consoleType = ConsoleOutput.Rich
-    String failureMessage = buildFailedStyled.errorOutput
-    String successMessage = buildSuccessStyled.output
+public class StackTraceSanitizingExceptionAnalyser implements ExceptionAnalyser {
+    private final ExceptionAnalyser analyser;
+
+    public StackTraceSanitizingExceptionAnalyser(ExceptionAnalyser analyser) {
+        this.analyser = analyser;
+    }
+
+    public RuntimeException transform(Throwable exception) {
+        return (RuntimeException) StackTraceUtils.deepSanitize(analyser.transform(exception));
+    }
 }

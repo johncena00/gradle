@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.gradle.internal.logging.console.taskgrouping.rich
+package org.gradle.test;
 
-import org.gradle.api.logging.configuration.ConsoleOutput
-import org.gradle.internal.logging.console.taskgrouping.AbstractFailureReportingFunctionalTest
+import static java.util.Collections.emptyList;
 
+import java.util.List;
 
-class RichConsoleFailureReportingFunctionalTest extends AbstractFailureReportingFunctionalTest {
-    ConsoleOutput consoleType = ConsoleOutput.Rich
+public class JavaClassWithStaticImport {
+    List<String> getProperty() { return emptyList(); }
 }

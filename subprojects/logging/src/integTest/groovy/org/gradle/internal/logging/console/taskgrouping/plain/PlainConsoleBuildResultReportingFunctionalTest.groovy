@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package org.gradle.internal.logging.console.taskgrouping.verbose
+package org.gradle.internal.logging.console.taskgrouping.plain
 
 import org.gradle.api.logging.configuration.ConsoleOutput
-import org.gradle.internal.logging.console.taskgrouping.AbstractFailureReportingFunctionalTest
+import org.gradle.internal.logging.console.taskgrouping.AbstractConsoleBuildResultFunctionalTest
 
-
-class VerboseConsoleFailureReportingFunctionalTest extends AbstractFailureReportingFunctionalTest {
-    ConsoleOutput consoleType = ConsoleOutput.Verbose
+class PlainConsoleBuildResultReportingFunctionalTest extends AbstractConsoleBuildResultFunctionalTest {
+    ConsoleOutput consoleType = ConsoleOutput.Plain
+    String failureMessage = buildFailed
+    String successMessage = buildSuccess
 }

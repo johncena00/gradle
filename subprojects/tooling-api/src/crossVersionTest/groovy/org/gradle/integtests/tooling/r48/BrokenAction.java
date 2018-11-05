@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package org.gradle.api.internal.buildevents
+package org.gradle.integtests.tooling.r48;
 
-import org.gradle.api.logging.configuration.ConsoleOutput
+import org.gradle.tooling.BuildAction;
+import org.gradle.tooling.BuildController;
 
-class PlainConsoleBuildResultLoggerFunctionalTest extends AbstractBuildResultLoggerFunctionalTest {
-    ConsoleOutput consoleType = ConsoleOutput.Plain
-    String failureMessage = buildFailed
-    String successMessage = buildSuccess
+public class BrokenAction implements BuildAction<String> {
+    @Override
+    public String execute(BuildController controller) {
+        throw new IllegalStateException("should not be called");
+    }
 }

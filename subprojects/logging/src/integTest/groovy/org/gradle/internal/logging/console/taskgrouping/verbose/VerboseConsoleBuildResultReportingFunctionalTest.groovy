@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-package org.gradle.initialization;
+package org.gradle.internal.logging.console.taskgrouping.verbose
 
-import org.codehaus.groovy.runtime.StackTraceUtils;
-import org.gradle.api.internal.ExceptionAnalyser;
+import org.gradle.api.logging.configuration.ConsoleOutput
+import org.gradle.internal.logging.console.taskgrouping.AbstractConsoleBuildResultFunctionalTest
 
-public class StackTraceSanitizingExceptionAnalyser implements ExceptionAnalyser {
-    private final ExceptionAnalyser analyser;
 
-    public StackTraceSanitizingExceptionAnalyser(ExceptionAnalyser analyser) {
-        this.analyser = analyser;
-    }
-
-    public Throwable transform(Throwable exception) {
-        return StackTraceUtils.deepSanitize(analyser.transform(exception));
-    }
+class VerboseConsoleBuildResultReportingFunctionalTest extends AbstractConsoleBuildResultFunctionalTest {
+    ConsoleOutput consoleType = ConsoleOutput.Verbose
+    String failureMessage = buildFailedStyled.errorOutput
+    String successMessage = buildSuccessStyled.output
 }

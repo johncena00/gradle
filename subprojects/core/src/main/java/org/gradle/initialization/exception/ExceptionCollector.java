@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package org.gradle.internal.logging.console.taskgrouping.plain
+package org.gradle.initialization.exception;
 
-import org.gradle.api.logging.configuration.ConsoleOutput
-import org.gradle.internal.logging.console.taskgrouping.AbstractFailureReportingFunctionalTest
+import java.util.Collection;
 
-class PlainConsoleFailureReportingFunctionalTest extends AbstractFailureReportingFunctionalTest {
-    ConsoleOutput consoleType = ConsoleOutput.Plain
+public interface ExceptionCollector {
+    /**
+     * Transforms the given failure into zero or more (most likely 1) failures to be reported.
+     */
+    void collectFailures(Throwable exception, Collection<? super Throwable> failures);
 }

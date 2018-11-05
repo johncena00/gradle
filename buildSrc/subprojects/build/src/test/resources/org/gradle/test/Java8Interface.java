@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-package org.gradle.api.internal.buildevents
+package org.gradle.test;
 
-import org.gradle.api.logging.configuration.ConsoleOutput
+import java.io.IOException;
+import java.util.function.Supplier;
 
-class VerboseConsoleBuildResultLoggerFunctionalTest extends AbstractBuildResultLoggerFunctionalTest {
-    ConsoleOutput consoleType = ConsoleOutput.Verbose
-    String failureMessage = buildFailedStyled.errorOutput
-    String successMessage = buildSuccessStyled.output
+/**
+ * An interface that uses Java 8 source features.
+ */
+public interface Java8Interface extends CombinedInterface, JavaInterface {
+    default String getName() {
+        try (Writer writer = new StringWriter()) {
+            Supplier<String> methodReference = this::toString;
+            Supplier<String> lambda = () -> this.toString();
+        } catch (IOException ignore) {
+        }
+        return "foo";
+    }
 }
