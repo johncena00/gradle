@@ -485,7 +485,7 @@ public class DefaultModelRegistry implements ModelRegistryInternal {
                     mutator.execute(node, inputs);
                 }
             });
-        } catch (Throwable e) {
+        } catch (Exception e) {
             // TODO some representation of state of the inputs
             throw new ModelRuleExecutionException(descriptor, e);
         }

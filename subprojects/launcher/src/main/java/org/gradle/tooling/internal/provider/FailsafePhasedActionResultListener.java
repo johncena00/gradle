@@ -38,7 +38,7 @@ public class FailsafePhasedActionResultListener implements PhasedActionResultLis
     public void onResult(PhasedActionResult<?> event) {
         try {
             delegate.onResult(event);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             listenerFailures.add(t);
         }
     }

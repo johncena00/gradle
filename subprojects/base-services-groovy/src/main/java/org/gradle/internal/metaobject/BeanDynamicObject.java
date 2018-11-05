@@ -335,7 +335,7 @@ public class BeanDynamicObject extends AbstractDynamicObject {
             if (metaClass instanceof MetaClassImpl) {
                 try {
                     return (MetaProperty) META_PROP_METHOD.invoke(metaClass, name, false);
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     throw UncheckedException.throwAsUncheckedException(e);
                 }
             }

@@ -34,12 +34,12 @@ import java.util.concurrent.locks.ReentrantLock;
 class DefaultFileSystemChangeWaiter implements FileSystemChangeWaiter {
     private final long quietPeriodMillis;
     private final BuildCancellationToken cancellationToken;
-    private final AtomicReference<Throwable> error = new AtomicReference<Throwable>();
+    private final AtomicReference<Exception> error = new AtomicReference<Exception>();
     private final Lock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
     private final AtomicLong lastChangeAt = new AtomicLong(0);
     private final FileWatcher watcher;
-    private final Action<Throwable> onError;
+    private final Action<Exception> onError;
     private boolean watching;
     private FileWatcherEventListener eventListener;
     private final Collection<FileWatcherEvent> eventsBeforeListening = new ArrayList<FileWatcherEvent>();
@@ -75,9 +75,9 @@ class DefaultFileSystemChangeWaiter implements FileSystemChangeWaiter {
     DefaultFileSystemChangeWaiter(FileWatcherFactory fileWatcherFactory, final PendingChangesListener pendingChangesListener, long quietPeriodMillis, BuildCancellationToken cancellationToken) {
         this.quietPeriodMillis = quietPeriodMillis;
         this.cancellationToken = cancellationToken;
-        this.onError = new Action<Throwable>() {
+        this.onError = new Action<Exception>() {
             @Override
-            public void execute(Throwable throwable) {
+            public void execute(Exception throwable) {
                 error.set(throwable);
                 signal(lock, condition);
             }
@@ -138,11 +138,11 @@ class DefaultFileSystemChangeWaiter implements FileSystemChangeWaiter {
             } finally {
                 lock.unlock();
             }
-            Throwable throwable = error.get();
-            if (throwable != null) {
-                throw throwable;
+            Exception exception = error.get();
+            if (exception != null) {
+                throw exception;
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             throw UncheckedException.throwAsUncheckedException(e);
         } finally {
             detachEventListener();

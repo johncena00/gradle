@@ -114,7 +114,7 @@ public class DisconnectableInputStream extends BulkReadInputStream {
                             lock.unlock();
                         }
                     }
-                } catch (Throwable throwable) {
+                } catch (Exception throwable) {
                     lock.lock();
                     try {
                         inputFinished = true;

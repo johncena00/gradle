@@ -100,7 +100,7 @@ public class DefaultPathKeyFileStore implements PathKeyFileStore {
             });
         } catch (FileStoreAddActionException e) {
             throw e;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             throw new FileStoreException(String.format("Failed to add into filestore '%s' at '%s' ", getBaseDir().getAbsolutePath(), path), e);
         }
     }
@@ -121,7 +121,7 @@ public class DefaultPathKeyFileStore implements PathKeyFileStore {
                     }
                 }
             });
-        } catch (Throwable e) {
+        } catch (Exception e) {
             throw new FileStoreException(String.format("Failed to move file '%s' into filestore at '%s' ", source, path), e);
         }
     }
@@ -139,7 +139,7 @@ public class DefaultPathKeyFileStore implements PathKeyFileStore {
         try {
             FileUtils.deleteQuietly(destination);
             action.execute(destination);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             FileUtils.deleteQuietly(destination);
             throw UncheckedException.throwAsUncheckedException(t);
         } finally {

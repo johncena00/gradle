@@ -46,7 +46,7 @@ class ExceptionPlaceholder implements Serializable {
 
         try {
             stackTrace = throwable.getStackTrace() == null ? new StackTraceElement[0] : throwable.getStackTrace();
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
 // TODO:ADAM - switch the logging back on. Need to make sending messages from daemon to client async wrt log event generation
 //                LOGGER.debug("Ignoring failure to extract throwable stack trace.", ignored);
             stackTrace = new StackTraceElement[0];
@@ -54,20 +54,20 @@ class ExceptionPlaceholder implements Serializable {
 
         try {
             message = throwable.getMessage();
-        } catch (Throwable failure) {
+        } catch (Exception failure) {
             getMessageExec = failure;
         }
 
         try {
             toString = throwable.toString();
-        } catch (Throwable failure) {
+        } catch (Exception failure) {
             toStringRuntimeExec = failure;
         }
 
         Throwable causeTmp;
         try {
             causeTmp = throwable.getCause();
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
 // TODO:ADAM - switch the logging back on.
 //                LOGGER.debug("Ignoring failure to extract throwable cause.", ignored);
             causeTmp = null;
@@ -97,7 +97,7 @@ class ExceptionPlaceholder implements Serializable {
             oos.writeObject(throwable);
             oos.close();
             serializedException = buffer.readAsByteArray();
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
 // TODO:ADAM - switch the logging back on.
 //                LOGGER.debug("Ignoring failure to serialize throwable.", ignored);
         }
@@ -127,7 +127,7 @@ class ExceptionPlaceholder implements Serializable {
                 return (Throwable) ois.readObject();
             } catch (ClassNotFoundException ignored) {
                 // Don't log
-            } catch (Throwable failure) {
+            } catch (Exception failure) {
                 LOGGER.debug("Ignoring failure to de-serialize throwable.", failure);
             }
         }
@@ -146,7 +146,7 @@ class ExceptionPlaceholder implements Serializable {
             // Don't log
         } catch (NoSuchMethodException ignored) {
             // Don't log
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
             LOGGER.debug("Ignoring failure to recreate throwable.", ignored);
         }
 

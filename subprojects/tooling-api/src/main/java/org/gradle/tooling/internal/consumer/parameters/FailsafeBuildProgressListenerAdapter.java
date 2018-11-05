@@ -37,7 +37,7 @@ public class FailsafeBuildProgressListenerAdapter implements InternalBuildProgre
         }
         try {
             delegate.onEvent(event);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             listenerFailure = t;
         }
     }

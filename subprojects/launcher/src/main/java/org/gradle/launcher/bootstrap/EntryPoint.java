@@ -43,7 +43,7 @@ public abstract class EntryPoint {
         RecordingExecutionListener listener = new RecordingExecutionListener();
         try {
             doAction(args, listener);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             createErrorHandler().execute(e);
             listener.onFailure(e);
         }

@@ -99,10 +99,10 @@ public class TestReportDataCollector implements TestListener, TestOutputListener
     private String failureMessage(Throwable throwable) {
         try {
             return throwable.toString();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             String exceptionClassName = exceptionClassName(throwable);
             return String.format("Could not determine failure message for exception of type %s: %s",
-                    exceptionClassName, t);
+                exceptionClassName, t);
         }
     }
 
@@ -113,7 +113,7 @@ public class TestReportDataCollector implements TestListener, TestOutputListener
     private String stackTrace(Throwable throwable) {
         try {
             return getStacktrace(throwable);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             return getStacktrace(t);
         }
     }

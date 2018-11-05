@@ -189,7 +189,7 @@ public class BuildOperationNotificationBridge {
 
             try {
                 notificationListener.started(notification);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 LOGGER.debug("Build operation notification listener threw an error on " + notification, e);
                 maybeThrow(e);
             }
@@ -236,7 +236,7 @@ public class BuildOperationNotificationBridge {
             Finished notification = new Finished(finishEvent.getEndTime(), id, parentId, buildOperation.getDetails(), finishEvent.getResult(), finishEvent.getFailure());
             try {
                 notificationListener.finished(notification);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 LOGGER.debug("Build operation notification listener threw an error on " + notification, e);
                 maybeThrow(e);
             }

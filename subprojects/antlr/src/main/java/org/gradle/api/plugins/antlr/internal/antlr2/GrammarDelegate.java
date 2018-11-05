@@ -65,7 +65,7 @@ public class GrammarDelegate {
 
             final Object exportVocabOption = options == null ? null : options.getElement("exportVocab");
             this.exportVocab = exportVocabOption == null ? null : vocabName((String) getRHSMethod.invoke(exportVocabOption, NO_ARGS));
-        } catch (Throwable t) {
+        } catch (Exception t) {
             throw new IllegalStateException("Error accessing  Antlr grammar metadata", t);
         }
     }

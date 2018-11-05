@@ -169,7 +169,7 @@ public class DefaultTaskContainer extends DefaultTaskCollection<Task> implements
                     configureAction.execute(task);
                     context.setResult(REALIZE_RESULT);
                     return task;
-                } catch (Throwable t) {
+                } catch (Exception t) {
                     throw taskCreationException(name, t);
                 }
             }
@@ -297,7 +297,7 @@ public class DefaultTaskContainer extends DefaultTaskCollection<Task> implements
                     configureAction.execute(task);
                     context.setResult(REALIZE_RESULT);
                     return task;
-                } catch (Throwable t) {
+                } catch (Exception t) {
                     throw taskCreationException(name, t);
                 }
             }
@@ -423,7 +423,7 @@ public class DefaultTaskContainer extends DefaultTaskCollection<Task> implements
                     addTask(task, true);
                     context.setResult(REALIZE_RESULT);
                     return task;
-                } catch (Throwable t) {
+                } catch (Exception t) {
                     throw taskCreationException(name, t);
                 }
             }

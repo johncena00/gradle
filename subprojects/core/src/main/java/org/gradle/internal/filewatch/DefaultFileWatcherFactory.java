@@ -56,7 +56,7 @@ public class DefaultFileWatcherFactory implements FileWatcherFactory, Stoppable 
     }
 
     @Override
-    public FileWatcher watch(Action<? super Throwable> onError, FileWatcherListener listener) {
+    public FileWatcher watch(Action<? super Exception> onError, FileWatcherListener listener) {
         if (fileWatcherFactory == null) {
             fileWatcherFactory = createFileWatcherFactory();
         }

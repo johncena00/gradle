@@ -101,7 +101,7 @@ public class CompositeStoppable implements Stoppable {
             for (Stoppable element : elements) {
                 try {
                     element.stop();
-                } catch (Throwable throwable) {
+                } catch (Exception throwable) {
                     if (failure == null) {
                         failure = throwable;
                     } else if (!Thread.currentThread().isInterrupted()) {

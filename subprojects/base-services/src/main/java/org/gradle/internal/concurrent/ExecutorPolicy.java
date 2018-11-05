@@ -20,7 +20,6 @@ import org.gradle.internal.UncheckedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -61,7 +60,7 @@ public interface ExecutorPolicy {
         public void onExecute(Runnable command) {
             try {
                 command.run();
-            } catch (Throwable throwable) {
+            } catch (Exception throwable) {
                 onFailure(String.format("Failed to execute %s.", command), throwable);
             }
         }
@@ -73,9 +72,6 @@ public interface ExecutorPolicy {
             } catch (Exception exception) {
                 onFailure(String.format("Failed to execute %s.", command), exception);
                 throw exception;
-            } catch(Throwable throwable) {
-                onFailure(String.format("Failed to execute %s.", command), throwable);
-                throw new UndeclaredThrowableException(throwable);
             }
         }
 

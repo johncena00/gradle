@@ -19,6 +19,7 @@ package org.gradle.api.internal;
 import org.gradle.api.Transformer;
 import org.gradle.api.reflect.ObjectInstantiationException;
 import org.gradle.cache.internal.CrossBuildInMemoryCache;
+import org.gradle.internal.UncheckedException;
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.internal.reflect.JavaReflectionUtil;
 import org.gradle.internal.service.ServiceRegistry;
@@ -68,14 +69,14 @@ public class DependencyInjectingInstantiator implements Instantiator {
                 }
                 return type.cast(instance);
             } catch (InvocationTargetException e) {
-                throw e.getCause();
+                throw UncheckedException.throwAsUncheckedException(e.getCause());
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             throw new ObjectInstantiationException(type, t);
         }
     }
 
-    private <T> Constructor<?> findConstructor(final Class<? extends T> type) throws Throwable {
+    private <T> Constructor<?> findConstructor(final Class<? extends T> type) throws Exception {
         CachedConstructor cached = constructorCache.get(type, new Transformer<CachedConstructor, Class<?>>() {
             @Override
             public CachedConstructor transform(Class<?> aClass) {
@@ -85,7 +86,7 @@ public class DependencyInjectingInstantiator implements Instantiator {
                     Constructor<?> constructor = selectConstructor(type, implClass);
                     constructor.setAccessible(true);
                     return CachedConstructor.of(constructor);
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     return CachedConstructor.of(e);
                 }
             }
@@ -200,9 +201,9 @@ public class DependencyInjectingInstantiator implements Instantiator {
 
     static class CachedConstructor {
         private final Constructor<?> constructor;
-        private final Throwable error;
+        private final Exception error;
 
-        private CachedConstructor(Constructor<?> constructor, Throwable error) {
+        private CachedConstructor(Constructor<?> constructor, Exception error) {
             this.constructor = constructor;
             this.error = error;
         }
@@ -211,7 +212,7 @@ public class DependencyInjectingInstantiator implements Instantiator {
             return new CachedConstructor(ctor, null);
         }
 
-        public static CachedConstructor of(Throwable err) {
+        public static CachedConstructor of(Exception err) {
             return new CachedConstructor(null, err);
         }
 

@@ -114,7 +114,7 @@ class DefaultBuildOperationQueue<T extends BuildOperation> implements BuildOpera
         // are being utilized, regardless of the bounds of the thread pool.
         try {
             new WorkerRunnable().run();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             addFailure(t);
         }
 
@@ -228,7 +228,7 @@ class DefaultBuildOperationQueue<T extends BuildOperation> implements BuildOpera
         private void runOperation(T operation) {
             try {
                 queueWorker.execute(operation);
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 addFailure(t);
             }
         }

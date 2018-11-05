@@ -173,7 +173,7 @@ public class DefaultBuildOperationExecutor implements BuildOperationExecutor, St
             LOGGER.debug("Build operation '{}' started", descriptor.getDisplayName());
             try {
                 worker.execute(buildOperation, context);
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 context.thrown(t);
                 failure = t;
             }

@@ -66,7 +66,7 @@ public class GradleWorkerMain {
         try {
             new GradleWorkerMain().run();
             System.exit(0);
-        } catch (Throwable throwable) {
+        } catch (Exception throwable) {
             throwable.printStackTrace(System.err);
             System.exit(1);
         }

@@ -27,7 +27,7 @@ public class FailureHandlingDispatch<T> implements Dispatch<T> {
     public void dispatch(T message) {
         try {
             dispatch.dispatch(message);
-        } catch (Throwable throwable) {
+        } catch (Exception throwable) {
             handler.dispatchFailed(message, throwable);
         }
     }

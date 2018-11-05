@@ -82,7 +82,7 @@ public class ExecHandleRunner implements Runnable {
                 streamsHandler.stop();
                 completed(exitValue);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             execHandle.failed(t);
         }
     }

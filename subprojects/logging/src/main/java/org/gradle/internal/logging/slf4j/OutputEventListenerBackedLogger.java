@@ -134,7 +134,7 @@ public class OutputEventListenerBackedLogger implements Logger {
         OutputEventListener outputEventListener = context.getOutputEventListener();
         try {
             outputEventListener.onOutput(logEvent);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             // fall back to standard out
             e.printStackTrace(System.out);
         }

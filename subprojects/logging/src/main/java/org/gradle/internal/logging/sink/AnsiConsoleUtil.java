@@ -44,7 +44,7 @@ public final class AnsiConsoleUtil {
     public static OutputStream wrapOutputStream(final OutputStream stream) {
         try {
             return wrapOutputStream(stream, STDOUT_FILENO);
-        } catch (Throwable ignore) {
+        } catch (Exception ignore) {
             return wrapOutputStream(stream, 0);
         }
     }
@@ -90,9 +90,10 @@ public final class AnsiConsoleUtil {
             // On windows we know the console does not interpret ANSI codes..
             try {
                 return new WindowsAnsiOutputStream(stream);
-            } catch (Throwable ignore) {
+            } catch (Exception ignore) {
                 // this happens when JNA is not in the path.. or
                 // this happens when the stdout is being redirected to a file.
+
             }
 
             // Use the ANSIOutputStream to strip out the ANSI escape sequences.
@@ -109,7 +110,7 @@ public final class AnsiConsoleUtil {
             if (!isXterm() && !forceColored && isatty(fileno) == 0) {
                 return new AnsiOutputStream(stream);
             }
-        } catch (Throwable ignore) {
+        } catch (Exception ignore) {
             // These errors happen if the JNI lib is not available for your platform.
             // But since we are on ANSI friendly platform, assume the user is on the console.
         }

@@ -62,7 +62,7 @@ public class DefaultResourceLockCoordinationService implements ResourceLockCoord
                         default:
                             throw new IllegalArgumentException("Unhandled disposition type: " + disposition.name());
                     }
-                } catch (Throwable t) {
+                } catch (Exception t) {
                     resourceLockState.releaseLocks();
                     throw UncheckedException.throwAsUncheckedException(t);
                 } finally {

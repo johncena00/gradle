@@ -91,7 +91,7 @@ public class DefaultToolingImplementationLoader implements ToolingImplementation
             }
         } catch (UnsupportedVersionException e) {
             throw e;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             throw new GradleConnectionException(String.format("Could not create an instance of Tooling API implementation using the specified %s.", distribution.getDisplayName()), t);
         }
     }

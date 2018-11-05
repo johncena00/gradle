@@ -42,7 +42,7 @@ public class ReportStatusDispatcher {
                 returnedStatus = (Status) result.getValue();
             }
             connection.dispatch(new Finished());
-        } catch (Throwable e) {
+        } catch (Exception e) {
             failure = e;
         }
         if (failure != null) {

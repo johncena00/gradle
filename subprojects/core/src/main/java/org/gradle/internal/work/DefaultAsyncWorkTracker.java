@@ -113,7 +113,7 @@ public class DefaultAsyncWorkTracker implements AsyncWorkTracker {
         for (AsyncWorkCompletion item : workItems) {
             try {
                 item.waitForCompletion();
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 if (Thread.currentThread().isInterrupted()) {
                     cancel(workItems);
                 }

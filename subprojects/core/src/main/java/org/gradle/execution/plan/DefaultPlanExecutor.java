@@ -174,7 +174,7 @@ public class DefaultPlanExecutor implements PlanExecutor {
 
                     try {
                         selected.set(executionPlan.selectNext(workerLease, resourceLockState));
-                    } catch (Throwable t) {
+                    } catch (Exception t) {
                         resourceLockState.releaseLocks();
                         executionPlan.abortAllAndFail(t);
                         nodesRemaining.set(false);
@@ -200,7 +200,7 @@ public class DefaultPlanExecutor implements PlanExecutor {
                 if (!selected.isComplete()) {
                     try {
                         nodeExecutor.execute(selected);
-                    } catch (Throwable e) {
+                    } catch (Exception e) {
                         selected.setExecutionFailure(e);
                     }
                 }

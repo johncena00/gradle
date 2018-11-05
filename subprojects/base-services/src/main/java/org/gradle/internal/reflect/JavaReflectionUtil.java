@@ -258,7 +258,7 @@ public class JavaReflectionUtil {
             Constructor<T> constructor = c.getDeclaredConstructor();
             constructor.setAccessible(true);
             return constructor.newInstance();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             throw UncheckedException.throwAsUncheckedException(e);
         }
     }

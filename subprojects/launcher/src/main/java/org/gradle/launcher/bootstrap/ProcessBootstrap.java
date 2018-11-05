@@ -36,7 +36,7 @@ public class ProcessBootstrap {
         try {
             runNoExit(mainClassName, args);
             System.exit(0);
-        } catch (Throwable throwable) {
+        } catch (Exception throwable) {
             throwable.printStackTrace();
             System.exit(1);
         }

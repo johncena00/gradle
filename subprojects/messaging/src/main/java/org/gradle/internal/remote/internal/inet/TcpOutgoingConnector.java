@@ -86,7 +86,7 @@ public class TcpOutgoingConnector implements OutgoingConnector {
         } catch (IOException e) {
             socketChannel.close();
             throw e;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             socketChannel.close();
             throw UncheckedException.throwAsUncheckedException(e);
         }

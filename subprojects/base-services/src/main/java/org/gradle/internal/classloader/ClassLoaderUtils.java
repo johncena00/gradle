@@ -118,7 +118,7 @@ public abstract class ClassLoaderUtils {
         protected AbstractClassLoaderLookuper() {
             try {
                 baseLookup = MethodHandles.lookup();
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
@@ -128,7 +128,7 @@ public abstract class ClassLoaderUtils {
                 MethodHandles.Lookup lookup = getLookupForClassLoader(classLoader);
                 MethodHandle methodHandle = lookup.findVirtual(ClassLoader.class, methodName, methodType);
                 return (T) methodHandle.bindTo(classLoader).invokeWithArguments(arguments);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
@@ -176,7 +176,7 @@ public abstract class ClassLoaderUtils {
                 } else {
                     return defineClass(classLoader, className, classBytes);
                 }
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }

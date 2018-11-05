@@ -53,7 +53,7 @@ public class DefaultAsyncConsumerActionExecutor implements AsyncConsumerActionEx
                         T result;
                         try {
                             result = actionExecutor.run(action);
-                        } catch (Throwable t) {
+                        } catch (Exception t) {
                             handler.onFailure(t);
                             return;
                         }

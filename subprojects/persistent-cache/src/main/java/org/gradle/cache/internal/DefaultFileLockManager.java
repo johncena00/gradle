@@ -105,7 +105,7 @@ public class DefaultFileLockManager implements FileLockManager {
         try {
             int port = fileLockContentionHandler.reservePort();
             return new DefaultFileLock(canonicalTarget, options, targetDisplayName, operationDisplayName, port, whenContended);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             lockedFiles.remove(canonicalTarget);
             throw throwAsUncheckedException(t);
         }
@@ -159,7 +159,7 @@ public class DefaultFileLockManager implements FileLockManager {
                     fileLockContentionHandler.start(lockId, whenContended);
                 }
                 lockState = lock(options.getMode());
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 // Also releases any locks
                 lockFileAccess.close();
                 throw t;
@@ -206,7 +206,7 @@ public class DefaultFileLockManager implements FileLockManager {
                 lockState = lockFileAccess.markDirty(lockState);
                 action.run();
                 lockState = lockFileAccess.markClean(lockState);
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 throw throwAsUncheckedException(t);
             }
         }
@@ -317,7 +317,7 @@ public class DefaultFileLockManager implements FileLockManager {
                 LOGGER.debug("Lock acquired on {}.", displayName);
                 lock = stateRegionLock;
                 return lockState;
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 stateRegionLock.release();
                 throw t;
             }

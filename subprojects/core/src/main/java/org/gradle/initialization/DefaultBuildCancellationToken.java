@@ -69,7 +69,7 @@ public class DefaultBuildCancellationToken implements BuildCancellationToken {
         for (Runnable callback : toCall) {
             try {
                 callback.run();
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 failures.add(ex);
             }
         }

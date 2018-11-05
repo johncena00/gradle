@@ -16,12 +16,6 @@
 
 package org.gradle.api.internal.tasks.testing.testng;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import org.gradle.api.GradleException;
 import org.gradle.api.internal.tasks.testing.TestClassProcessor;
 import org.gradle.api.internal.tasks.testing.TestClassRunInfo;
@@ -41,6 +35,12 @@ import org.testng.ISuite;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.TestNG;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import static org.gradle.api.tasks.testing.testng.TestNGOptions.DEFAULT_CONFIG_FAILURE_POLICY;
 
@@ -78,7 +78,7 @@ public class TestNGTestClassProcessor implements TestClassProcessor {
         // TODO - do this inside some 'testng' suite, so that failures and logging are attached to 'testng' rather than some 'test worker'
         try {
             testClasses.add(applicationClassLoader.loadClass(testClass.getTestClassName()));
-        } catch (Throwable e) {
+        } catch (Exception e) {
             throw new GradleException(String.format("Could not load test class '%s'.", testClass.getTestClassName()), e);
         }
     }
@@ -121,7 +121,7 @@ public class TestNGTestClassProcessor implements TestClassProcessor {
         for (String listenerClass : options.getListeners()) {
             try {
                 testNg.addListener(JavaReflectionUtil.newInstance(applicationClassLoader.loadClass(listenerClass)));
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 throw new GradleException(String.format("Could not add a test listener with class '%s'.", listenerClass), e);
             }
         }

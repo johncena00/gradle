@@ -37,7 +37,7 @@ public class ExecHandleShutdownHookAction implements Runnable {
     public void run() {
         try {
             execHandle.abort();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             LOGGER.error("failed to abort " + execHandle, t);
         }
     }

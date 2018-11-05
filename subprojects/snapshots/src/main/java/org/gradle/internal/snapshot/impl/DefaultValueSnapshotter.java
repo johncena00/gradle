@@ -63,7 +63,7 @@ public class DefaultValueSnapshotter implements ValueSnapshotter {
     public <T> Isolatable<T> isolate(T value) {
         try {
             return Cast.uncheckedCast(isolatableSnapshot(value));
-        } catch (Throwable t) {
+        } catch (Exception t) {
             throw new IsolationException(value, t);
         }
     }

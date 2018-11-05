@@ -145,7 +145,7 @@ public class DefaultIncomingConnectionHandler implements IncomingConnectionHandl
                 Command command = (Command) daemonConnection.receive(120, TimeUnit.SECONDS);
                 LOGGER.info("Received command: {}.", command);
                 return command;
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 LOGGER.warn(String.format("Unable to receive command from client %s. Discarding connection.", connection), e);
                 return null;
             }
@@ -158,7 +158,7 @@ public class DefaultIncomingConnectionHandler implements IncomingConnectionHandl
                     throw new BadlyFormedRequestException(String.format("Unexpected authentication token in command %s received from %s", command, connection));
                 }
                 commandExecuter.executeCommand(daemonConnection, command, daemonContext, daemonStateControl);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 LOGGER.warn(String.format("Unable to execute command %s from %s. Dispatching the failure to the daemon client", command, connection), e);
                 daemonConnection.completed(new Failure(e));
             } finally {

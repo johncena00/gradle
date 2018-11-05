@@ -39,9 +39,9 @@ public class SuiteTestClassProcessor implements TestClassProcessor {
             resultProcessor = new AttachParentTestResultProcessor(new CaptureTestOutputTestResultProcessor(testResultProcessor, new JULRedirector()));
             resultProcessor.started(suiteDescriptor, new TestStartEvent(clock.getCurrentTime()));
             processor.startProcessing(resultProcessor);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             resultProcessor.failure(suiteDescriptor.getId(), new TestSuiteExecutionException(String.format(
-                    "Could not start %s.", suiteDescriptor), t));
+                "Could not start %s.", suiteDescriptor), t));
         }
     }
 
@@ -49,9 +49,9 @@ public class SuiteTestClassProcessor implements TestClassProcessor {
     public void processTestClass(TestClassRunInfo testClass) {
         try {
             processor.processTestClass(testClass);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             resultProcessor.failure(suiteDescriptor.getId(), new TestSuiteExecutionException(String.format(
-                    "Could not execute test class '%s'.", testClass.getTestClassName()), t));
+                "Could not execute test class '%s'.", testClass.getTestClassName()), t));
         }
     }
 
@@ -59,9 +59,9 @@ public class SuiteTestClassProcessor implements TestClassProcessor {
     public void stop() {
         try {
             processor.stop();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             resultProcessor.failure(suiteDescriptor.getId(), new TestSuiteExecutionException(String.format(
-                    "Could not complete execution for %s.", suiteDescriptor), t));
+                "Could not complete execution for %s.", suiteDescriptor), t));
         } finally {
             resultProcessor.completed(suiteDescriptor.getId(), new TestCompleteEvent(clock.getCurrentTime()));
         }

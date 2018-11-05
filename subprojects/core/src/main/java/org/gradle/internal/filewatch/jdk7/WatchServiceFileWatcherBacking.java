@@ -93,7 +93,7 @@ public class WatchServiceFileWatcherBacking {
                                 pumpEvents();
                             } catch (InterruptedException e) {
                                 Thread.currentThread().interrupt();
-                            } catch (Throwable t) {
+                            } catch (Exception t) {
                                 if (!(Throwables.getRootCause(t) instanceof InterruptedException)) {
                                     stop();
                                     onError.execute(t);

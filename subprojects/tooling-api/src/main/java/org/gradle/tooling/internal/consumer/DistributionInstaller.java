@@ -56,7 +56,7 @@ public class DistributionInstaller {
     private final Object lock = new Object();
     private boolean completed;
     private boolean cancelled;
-    private Throwable failure;
+    private Exception failure;
 
     public DistributionInstaller(ProgressLoggerFactory progressLoggerFactory, InternalBuildProgressListener buildProgressListener, Clock clock) {
         this.progressLoggerFactory = progressLoggerFactory;
@@ -91,7 +91,7 @@ public class DistributionInstaller {
         Throwable failure = null;
         try {
             withProgressLogging(address, destination, descriptor);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             failure = t;
         }
 
@@ -106,7 +106,7 @@ public class DistributionInstaller {
         }
     }
 
-    private void withProgressLogging(URI address, File destination, OperationDescriptor operationDescriptor) throws Throwable {
+    private void withProgressLogging(URI address, File destination, OperationDescriptor operationDescriptor) throws Exception {
         ProgressLogger progressLogger = progressLoggerFactory.newOperation(DistributionInstaller.class);
         progressLogger.setDescription("Download " + address);
         progressLogger.started();
@@ -117,7 +117,7 @@ public class DistributionInstaller {
         }
     }
 
-    private void withAsyncDownload(final URI address, final File destination, final OperationDescriptor operationDescriptor) throws Throwable {
+    private void withAsyncDownload(final URI address, final File destination, final OperationDescriptor operationDescriptor) throws Exception {
         currentListener.set(buildProgressListener);
         try {
             // Start the download in another thread and wait for the result
@@ -126,7 +126,7 @@ public class DistributionInstaller {
                 public void run() {
                     try {
                         new Download(new Logger(false), new ForwardingDownloadProgressListener(operationDescriptor), APP_NAME, GradleVersion.current().getVersion()).download(address, destination);
-                    } catch (Throwable t) {
+                    } catch (Exception t) {
                         synchronized (lock) {
                             failure = t;
                         }

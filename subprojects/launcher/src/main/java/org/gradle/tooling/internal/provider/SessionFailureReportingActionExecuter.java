@@ -59,7 +59,7 @@ public class SessionFailureReportingActionExecuter implements BuildExecuter {
             return delegate.execute(action, requestContext, actionParameters, contextServices);
         } catch (ReportedException e) {
             throw e;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             // TODO - wire this stuff in properly
 
             // Sanitise the exception and report it

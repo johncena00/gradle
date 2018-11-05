@@ -277,7 +277,7 @@ public class ExecuteActionsTaskExecuter implements TaskExecuter {
                 Throwable actionFailure = null;
                 try {
                     action.execute(task);
-                } catch (Throwable t) {
+                } catch (Exception t) {
                     actionFailure = t;
                 } finally {
                     action.releaseContext();
@@ -285,7 +285,7 @@ public class ExecuteActionsTaskExecuter implements TaskExecuter {
 
                 try {
                     asyncWorkTracker.waitForCompletion(currentOperation, true);
-                } catch (Throwable t) {
+                } catch (Exception t) {
                     List<Throwable> failures = Lists.newArrayList();
 
                     if (actionFailure != null) {

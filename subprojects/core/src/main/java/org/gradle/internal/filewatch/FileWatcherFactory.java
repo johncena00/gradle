@@ -34,5 +34,5 @@ public interface FileWatcherFactory {
      * @param listener the receiver of events
      * @return a, stoppable, handle to the watcher
      */
-    FileWatcher watch(Action<? super Throwable> onError, FileWatcherListener listener);
+    FileWatcher watch(Action<? super Exception> onError, FileWatcherListener listener);
 }

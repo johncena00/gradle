@@ -48,7 +48,7 @@ public class ClasspathUtil {
                     method.invoke(classLoader, classpathElement);
                 }
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             throw new RuntimeException(String.format("Could not add URLs %s to class path for ClassLoader %s", classpathElements, classLoader), t);
         }
     }

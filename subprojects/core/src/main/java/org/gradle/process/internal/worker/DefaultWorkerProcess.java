@@ -137,7 +137,7 @@ public class DefaultWorkerProcess implements WorkerProcess {
         try {
             try {
                 execResult.rethrowFailure().assertNormalExitValue();
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 processFailure = e;
             }
             running = false;
@@ -162,7 +162,7 @@ public class DefaultWorkerProcess implements WorkerProcess {
     public WorkerProcess start() {
         try {
             doStart();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             cleanup();
             throw UncheckedException.throwAsUncheckedException(t);
         }

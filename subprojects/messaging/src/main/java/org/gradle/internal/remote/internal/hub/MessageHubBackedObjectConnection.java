@@ -63,7 +63,7 @@ public class MessageHubBackedObjectConnection implements ObjectConnection {
                 for (Action<Throwable> handler : unrecoverableErrorHandlers) {
                     try {
                         handler.execute(current);
-                    } catch (Throwable e) {
+                    } catch (Exception e) {
                         current = new DefaultMultiCauseException("Error in unrecoverable error handler: " + handler, e, throwable);
                     }
                 }

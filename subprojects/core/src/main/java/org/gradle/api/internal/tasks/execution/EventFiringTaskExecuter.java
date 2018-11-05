@@ -59,7 +59,7 @@ public class EventFiringTaskExecuter implements TaskExecuter {
             private TaskExecuterResult executeTask(BuildOperationContext operationContext) {
                 try {
                     taskExecutionListener.beforeExecute(task);
-                } catch (Throwable t) {
+                } catch (Exception t) {
                     state.setOutcome(new TaskExecutionException(task, t));
                     return null;
                 }
@@ -69,7 +69,7 @@ public class EventFiringTaskExecuter implements TaskExecuter {
 
                 try {
                     taskExecutionListener.afterExecute(task, state);
-                } catch (Throwable t) {
+                } catch (Exception t) {
                     state.addFailure(new TaskExecutionException(task, t));
                 }
 

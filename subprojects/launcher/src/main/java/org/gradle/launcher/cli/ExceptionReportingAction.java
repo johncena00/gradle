@@ -40,7 +40,7 @@ public class ExceptionReportingAction implements Action<ExecutionListener> {
             }
         } catch (ReportedException e) {
             executionListener.onFailure(e.getCause());
-        } catch (Throwable t) {
+        } catch (Exception t) {
             reporter.execute(t);
             executionListener.onFailure(t);
         }

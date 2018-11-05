@@ -34,7 +34,7 @@ public class WorkerDaemonServer extends DefaultWorkerServer {
     public DefaultWorkResult execute(ActionExecutionSpec spec) {
         try {
             return super.execute(spec);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             return new DefaultWorkResult(true, t);
         }
     }

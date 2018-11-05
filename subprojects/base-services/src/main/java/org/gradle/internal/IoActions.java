@@ -75,7 +75,7 @@ public abstract class IoActions {
     public static <T extends Closeable> void withResource(T resource, Action<? super T> action) {
         try {
             action.execute(resource);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             closeQuietly(resource);
             throw UncheckedException.throwAsUncheckedException(t);
         }
@@ -86,7 +86,7 @@ public abstract class IoActions {
         R result;
         try {
             result = action.transform(resource);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             closeQuietly(resource);
             throw UncheckedException.throwAsUncheckedException(t);
         }

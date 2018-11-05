@@ -270,12 +270,8 @@ public class Daemon implements Stoppable {
                     if (result.getStatus() != DO_NOT_EXPIRE) {
                         listenerBroadcast.onExpirationEvent(result);
                     }
-                } catch (Throwable t) {
+                } catch (Exception t) {
                     LOGGER.error("Problem in daemon expiration check", t);
-                    if (t instanceof Error) {
-                        // never swallow java.lang.Error
-                        throw (Error) t;
-                    }
                 } finally {
                     lock.unlock();
                 }

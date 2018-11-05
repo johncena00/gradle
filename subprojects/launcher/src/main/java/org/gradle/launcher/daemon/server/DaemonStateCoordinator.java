@@ -294,7 +294,7 @@ public class DaemonStateCoordinator implements Stoppable, DaemonStateControl {
                     try {
                         command.run();
                         onCommandSuccessful();
-                    } catch (Throwable t) {
+                    } catch (Exception t) {
                         onCommandFailed(t);
                     }
                 }
@@ -379,7 +379,7 @@ public class DaemonStateCoordinator implements Stoppable, DaemonStateControl {
                 updateActivityTimestamp();
                 updateCancellationToken();
                 condition.signalAll();
-            } catch (Throwable throwable) {
+            } catch (Exception throwable) {
                 setState(State.Broken);
                 throw UncheckedException.throwAsUncheckedException(throwable);
             }
@@ -403,7 +403,7 @@ public class DaemonStateCoordinator implements Stoppable, DaemonStateControl {
                     try {
                         onFinishCommand.run();
                         setState(State.Idle);
-                    } catch (Throwable throwable) {
+                    } catch (Exception throwable) {
                         setState(State.Broken);
                         throw UncheckedException.throwAsUncheckedException(throwable);
                     }

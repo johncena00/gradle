@@ -89,7 +89,7 @@ public class DefaultWorkerExecutor implements WorkerExecutor {
         ActionExecutionSpec spec;
         try {
             spec = new SerializingActionExecutionSpec(actionClass, description, configuration.getParams());
-        } catch (Throwable t) {
+        } catch (Exception t) {
             throw new WorkExecutionException(description, t);
         }
 
@@ -106,7 +106,7 @@ public class DefaultWorkerExecutor implements WorkerExecutor {
                     WorkerFactory workerFactory = getWorkerFactory(isolationMode);
                     Worker worker = workerFactory.getWorker(daemonForkOptions);
                     return worker.execute(spec, currentBuildOperation);
-                } catch (Throwable t) {
+                } catch (Exception t) {
                     throw new WorkExecutionException(spec.getDisplayName(), t);
                 }
             }

@@ -85,7 +85,7 @@ public class FilterChain implements Transformer<InputStream, InputStream> {
                         ConfigureUtil.configureByMap(properties, result);
                     }
                     return result;
-                } catch (Throwable th) {
+                } catch (Exception th) {
                     throw new InvalidUserDataException("Error - Invalid filter specification for " + filterType.getName(), th);
                 }
             }

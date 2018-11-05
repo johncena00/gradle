@@ -88,7 +88,7 @@ public class DefaultScriptRunnerFactory implements ScriptRunnerFactory {
             script.getStandardOutputCapture().start();
             try {
                 script.run();
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 throw new GradleScriptException(String.format("A problem occurred evaluating %s.", script), e);
             } finally {
                 script.getStandardOutputCapture().stop();

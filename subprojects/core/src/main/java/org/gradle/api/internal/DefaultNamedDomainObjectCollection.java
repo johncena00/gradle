@@ -924,7 +924,7 @@ public class DefaultNamedDomainObjectCollection<T> extends DefaultDomainObjectCo
                 add(object, onCreate);
                 realized(AbstractDomainObjectCreatingProvider.this);
                 onLazyDomainObjectRealized();
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 failure = domainObjectCreationException(ex);
                 throw failure;
             } finally {

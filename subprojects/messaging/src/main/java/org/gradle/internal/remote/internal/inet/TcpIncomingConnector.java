@@ -117,7 +117,7 @@ public class TcpIncomingConnector implements IncomingConnector {
                     }
                 } catch (ClosedChannelException e) {
                     // Ignore
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     LOGGER.error("Could not accept remote connection.", e);
                 }
             } finally {

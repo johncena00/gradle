@@ -117,7 +117,7 @@ public class DefaultServiceLocator implements ServiceLocator {
                     if (implementationClassNamesFromResource.isEmpty()) {
                         throw new RuntimeException(String.format("No implementation class for service '%s' specified.", serviceType.getName()));
                     }
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     throw new ServiceLookupException(String.format("Could not determine implementation class for service '%s' specified in resource '%s'.", serviceType.getName(), resource), e);
                 }
 
@@ -129,7 +129,7 @@ public class DefaultServiceLocator implements ServiceLocator {
                                 throw new RuntimeException(String.format("Implementation class '%s' is not assignable to service class '%s'.", implementationClassName, serviceType.getName()));
                             }
                             implementations.add(implClass.asSubclass(serviceType));
-                        } catch (Throwable e) {
+                        } catch (Exception e) {
                             throw new ServiceLookupException(String.format("Could not load implementation class '%s' for service '%s' specified in resource '%s'.", implementationClassName, serviceType.getName(), resource), e);
                         }
                     }

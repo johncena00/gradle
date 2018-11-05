@@ -278,7 +278,7 @@ public class MessageHub implements AsyncStoppable {
                         lock.unlock();
                     }
                 }
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 errorHandler.execute(e);
             }
         }
@@ -337,7 +337,7 @@ public class MessageHub implements AsyncStoppable {
                         lock.unlock();
                     }
                 }
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 errorHandler.execute(t);
             }
         }
@@ -405,7 +405,7 @@ public class MessageHub implements AsyncStoppable {
                             } else if (message instanceof RejectedMessage) {
                                 RejectedMessage rejectedMessage = (RejectedMessage) message;
                                 listener.messageDiscarded(rejectedMessage.getPayload());
-                            } else if (message instanceof StreamFailureMessage){
+                            } else if (message instanceof StreamFailureMessage) {
                                 StreamFailureMessage streamFailureMessage = (StreamFailureMessage) message;
                                 streamFailureHandler.handleStreamFailure(streamFailureMessage.getFailure());
                             } else {
@@ -422,7 +422,7 @@ public class MessageHub implements AsyncStoppable {
                         lock.unlock();
                     }
                 }
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 errorHandler.execute(t);
             }
         }

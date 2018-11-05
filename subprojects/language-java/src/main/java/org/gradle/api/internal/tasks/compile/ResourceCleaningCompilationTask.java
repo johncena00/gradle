@@ -73,7 +73,7 @@ class ResourceCleaningCompilationTask implements JavaCompiler.CompilationTask {
             Class<?> zipFileIndexCache = Class.forName("com.sun.tools.javac.file.ZipFileIndexCache");
             Object instance = zipFileIndexCache.getMethod("getSharedInstance").invoke(null);
             zipFileIndexCache.getMethod("clearCache").invoke(instance);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             // Not an OpenJDK-compatible compiler or signature changed
         }
     }

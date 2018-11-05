@@ -59,7 +59,7 @@ public class InstantiatingAction<DETAILS> implements Action<DETAILS> {
                     }
                 }
                 instance.execute(target);
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 exceptionHandler.handleException(target, t);
             }
             i++;

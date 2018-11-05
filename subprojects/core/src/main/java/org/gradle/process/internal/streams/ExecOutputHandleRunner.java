@@ -67,7 +67,7 @@ public class ExecOutputHandleRunner implements Runnable {
                 outputStream.flush();
             }
             CompositeStoppable.stoppable(inputStream, outputStream).stop();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             if (!closed && !wasInterrupted(t)) {
                 LOGGER.error(String.format("Could not %s.", displayName), t);
             }

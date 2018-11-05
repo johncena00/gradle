@@ -76,7 +76,7 @@ public class DefaultPersistentDirectoryStore implements ReferencablePersistentCa
         cacheAccess = createCacheAccess();
         try {
             cacheAccess.open();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             throw new CacheOpenException(String.format("Could not open %s.", this), e);
         }
 

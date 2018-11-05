@@ -147,7 +147,7 @@ class CacheAccessWorker implements Runnable, Stoppable, AsyncCacheAccess {
                     throw UncheckedException.throwAsUncheckedException(e);
                 }
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             failureHandler.onFailure("Failed to execute cache operations on " + displayName, t);
         } finally {
             // Notify any waiting flush threads that the worker is done, possibly with a failure

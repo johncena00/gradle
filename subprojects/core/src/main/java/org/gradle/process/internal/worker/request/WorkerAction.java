@@ -57,7 +57,7 @@ public class WorkerAction implements Action<WorkerProcessContext>, Serializable,
             }
             workerImplementation = Class.forName(workerImplementationName);
             implementation = instantiatorFactory.inject(workerProcessContext.getServiceRegistry()).newInstance(workerImplementation);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             failure = e;
         }
 
@@ -111,7 +111,7 @@ public class WorkerAction implements Action<WorkerProcessContext>, Serializable,
                 return;
             }
             responder.completed(result);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             responder.infrastructureFailed(t);
         } finally {
             CurrentBuildOperationRef.instance().clear();

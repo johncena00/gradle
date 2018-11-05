@@ -50,7 +50,7 @@ public class DefaultWorkerServer implements WorkerProtocol {
             } else {
                 throw new IllegalArgumentException("Worker actions must either implement Runnable or Callable<WorkResult>.");
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             return new DefaultWorkResult(true, t);
         }
     }

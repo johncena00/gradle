@@ -126,7 +126,7 @@ public abstract class AbstractTestFrameworkDetector<T extends TestClassVisitor> 
             final ClassReader classReader = new ClassReader(IOUtils.toByteArray(classStream));
             classReader.accept(classVisitor, ClassReader.SKIP_DEBUG | ClassReader.SKIP_CODE | ClassReader.SKIP_FRAMES);
             return TestClass.forParseableFile(classVisitor);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOGGER.debug("Failed to read class file " + testClassFile.getAbsolutePath() + "; assuming it's a test class and continuing", e);
             return TestClass.forUnparseableFile(fallbackClassNameProvider.create());
         } finally {

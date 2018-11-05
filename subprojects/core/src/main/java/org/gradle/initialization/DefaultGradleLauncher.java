@@ -161,7 +161,7 @@ public class DefaultGradleLauncher implements GradleLauncher {
                 return;
             }
             finishBuild();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             finishBuild(upTo.getDisplayName(), t);
         }
     }
@@ -177,7 +177,7 @@ public class DefaultGradleLauncher implements GradleLauncher {
         includedBuildControllers.finishBuild(failures);
         try {
             buildListener.buildFinished(buildResult);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             failures.add(t);
         }
         stage = Stage.Finished;

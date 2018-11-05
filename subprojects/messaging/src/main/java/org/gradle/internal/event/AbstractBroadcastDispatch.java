@@ -44,7 +44,7 @@ public abstract class AbstractBroadcastDispatch<T> implements Dispatch<MethodInv
             throw new ListenerNotificationException(invocation, getErrorMessage(), Collections.singletonList(e.getCause()));
         } catch (RuntimeException t) {
             throw t;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             throw new ListenerNotificationException(invocation, getErrorMessage(), Collections.singletonList(t));
         }
     }
@@ -70,7 +70,7 @@ public abstract class AbstractBroadcastDispatch<T> implements Dispatch<MethodInv
                     failures = new ArrayList<Throwable>();
                 }
                 failures.add(e.getCause());
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 if (failures == null) {
                     failures = new ArrayList<Throwable>();
                 }

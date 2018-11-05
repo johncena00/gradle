@@ -46,7 +46,7 @@ public class AllExceptIgnoredTestRunnerBuilder extends AllDefaultPossibilitiesBu
         public Runner runnerForClass(Class<?> testClass) throws Throwable {
             try {
                 return new BlockJUnit4ClassRunner(testClass);
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 //failed to instantiate BlockJUnitRunner. try deprecated JUnitRunner (for JUnit < 4.5)
                 try {
                     Class<Runner> runnerClass = (Class<Runner>) Thread.currentThread().getContextClassLoader().loadClass("org.junit.internal.runners.JUnit4ClassRunner");

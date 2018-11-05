@@ -144,7 +144,7 @@ public class DefaultCacheAccess implements CacheCoordinator {
             } finally {
                 releaseOwnership();
             }
-        } catch (Throwable throwable) {
+        } catch (Exception throwable) {
             crossProcessCacheAccess.close();
             throw UncheckedException.throwAsUncheckedException(throwable);
         } finally {
@@ -212,7 +212,7 @@ public class DefaultCacheAccess implements CacheCoordinator {
                 takeOwnership();
                 try {
                     wasStarted = onStartWork();
-                } catch (Throwable t) {
+                } catch (Exception t) {
                     releaseOwnership();
                     throw UncheckedException.throwAsUncheckedException(t);
                 }
